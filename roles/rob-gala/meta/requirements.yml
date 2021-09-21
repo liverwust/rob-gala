@@ -1,3 +1,4 @@
 ---
 
 - name: gantsign.minikube
+- name: weareinteractive.ufw

@@ -44,6 +44,7 @@ ansible-galaxy install -r meta/requirements.yml
 ```
 
 * gantsign.minikube
+* weareinteractive.ufw
 
 Example Playbook
 ----------------

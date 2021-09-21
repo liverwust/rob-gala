@@ -1,0 +1,10 @@
+---
+
+- name: Install Uncomplicated Firewall (UFW)
+  include_role:
+    name: weareinteractive.ufw
+  vars:
+    ufw_rules:
+      - logging: "full"
+      - rule: allow
+        name: OpenSSH
