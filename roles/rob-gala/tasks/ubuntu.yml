@@ -1,0 +1,19 @@
+---
+# https://aaronsaray.com/2021/ansible-reboot-if-required
+# but don't actually reboot, just fail out
+
+- name: Update apt-cache and do dist upgrade
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: dist
+
+- name: Check if reboot required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required_file
+
+- name: Fail if reboot required
+  fail:
+    msg: Guest OS needs to be rebooted before proceeding
+  when: reboot_required_file.stat.exists == true

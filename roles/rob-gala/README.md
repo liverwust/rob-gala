@@ -36,7 +36,12 @@ protected by Ansible Vault):
 Dependencies
 ------------
 
-* gantsign/minikube
+Install the following Ansible Galaxy role(s) with
+```
+ansible-galaxy install -r meta/requirements.yml
+```
+
+* gantsign.minikube
 
 Example Playbook
 ----------------

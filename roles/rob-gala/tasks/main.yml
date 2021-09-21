@@ -1,2 +1,5 @@
 ---
 # tasks file for rob-gala
+
+- name: Basic Ubuntu patching
+  include_tasks: ubuntu.yml
