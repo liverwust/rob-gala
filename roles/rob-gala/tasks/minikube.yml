@@ -1,0 +1,4 @@
+---
+
+- name: Install minikube
+  include_role: gantsign.minikube

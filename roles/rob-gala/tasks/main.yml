@@ -3,3 +3,6 @@
 
 - name: Basic Ubuntu patching
   include_tasks: ubuntu.yml
+
+- name: Install and configure Minikube
+  include_tasks: minikube.yml
