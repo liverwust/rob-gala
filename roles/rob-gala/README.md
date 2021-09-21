@@ -23,6 +23,8 @@ Role Variables
 The following host_vars need to be specified (ideally in a file
 protected by Ansible Vault):
 
+* gala_linux_user: user account on the Gala Linux host
+* gala_linux_pass: password for the Gala Linux host
 * gala_email: e-mail address for the Gala account
 * gala_password: password for that same account
 * gala_node_specifier: For running multiple nodes in parallel; see

@@ -1,0 +1,9 @@
+gala_linux_user: "{{ vault_gala_linux_user }}"
+gala_linux_pass: "{{ vault_gala_linux_pass }}"
+gala_email: "{{ vault_gala_email }}"
+gala_password: "{{ vault_gala_password }}"
+gala_node_specifier: "{{ vault_gala_node_specifier }}"
+gala_machine_id: "{{ vault_gala_machine_id }}"
+
+ansible_user: "{{ gala_linux_user }}"
+ansible_become_password: "{{ gala_linux_pass }}"
