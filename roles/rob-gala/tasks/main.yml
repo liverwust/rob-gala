@@ -7,5 +7,20 @@
 - name: Configure system firewall (UFW)
   import_tasks: firewall.yml
 
+- name: Configure Git
+  import_tasks: git.yml
+
 - name: Install and configure Docker
   import_tasks: docker.yml
+
+- name: Set up the environment files
+  import_tasks: env.yml
+  tags:
+    - starthere
+  become: false
+
+- name: Build and run the container image
+  import_tasks: container.yml
+  tags:
+    - starthere
+  become: false

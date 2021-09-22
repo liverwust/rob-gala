@@ -1,0 +1,44 @@
+---
+
+- name: (User) Check out latest Gala Node Dockerfile 
+  git:
+    repo: "https://github.com/ewrogers/gala-docker"
+    dest: "{{ gala_linux_user_homedir }}/gala-docker"
+  register: git_status
+  become: false
+
+- name: (User) Obtain the short Git revision
+  command: git rev-parse --short "{{ git_status.after }}"
+  register: git_short_rev_result
+  args:
+    chdir: "{{ gala_linux_user_homedir }}/gala-docker"
+  become: false
+
+- name: (User) Isolate the short Git revision
+  set_fact:
+    git_short_rev: "{{ git_short_rev_result.stdout }}"
+  become: false
+
+- name: Build the Docker container image
+  command: "docker build -t gala-docker:{{ git_short_rev }} ."
+  args:
+    chdir: "{{ gala_linux_user_homedir }}/gala-docker"
+  when: git_status.remote_url_changed | default(true)
+  become: false
+
+- name: Remove the existing container, if one existed and it needed to be removed
+  docker_container:
+    name: "galanode-{{ gala_node_specifier }}"
+    state: absent
+  when: git_status.remote_url_changed | default(true)
+  become: false
+
+- name: (User) Create and run the (new) container
+  docker_container:
+    name: "galanode-{{ gala_node_specifier }}"
+    image: "gala-docker:{{ git_short_rev }}"
+    restart_policy: unless-stopped
+    env_file: "{{ gala_linux_user_homedir }}/galanode-{{ gala_node_specifier }}.env"
+    volumes:
+      - "{{ gala_linux_user_homedir }}/galanode-{{ gala_node_specifier }}.machine-id:/etc/machine-id"
+  become: false
