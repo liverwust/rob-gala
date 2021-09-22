@@ -44,7 +44,6 @@ ansible-galaxy install -r meta/requirements.yml
 ```
 
 * angstwad.docker_ubuntu
-* gantsign.minikube
 
 Example Playbook
 ----------------

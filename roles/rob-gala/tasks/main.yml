@@ -9,6 +9,3 @@
 
 - name: Install and configure Docker
   import_tasks: docker_rootless.yml
-
-- name: Install and configure Minikube
-  import_tasks: minikube.yml
