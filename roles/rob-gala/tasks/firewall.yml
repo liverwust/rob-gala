@@ -40,7 +40,7 @@
     comment: Reject incoming, locally-destined LAN traffic
     direction: in
     from_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
-    insert: 1
+    insert: 0
     insert_relative_to: last-ipv4
     route: no
     rule: reject
@@ -62,7 +62,7 @@
   ufw:
     comment: Drop outgoing, locally-generated LAN traffic
     direction: out
-    insert: 1
+    insert: 0
     insert_relative_to: last-ipv4
     rule: deny
     to_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
@@ -92,6 +92,7 @@
     insert: 0
     insert_relative_to: first-ipv6
     proto: ipv6
-- name: Enable UFW at boot
+
+- name: Enable UFW at boot (this may hang; if so, Ctrl-C and re-run the playbook)
   ufw:
     state: enabled

@@ -43,8 +43,8 @@ Install the following Ansible Galaxy role(s) with
 ansible-galaxy install -r meta/requirements.yml
 ```
 
+* angstwad.docker_ubuntu
 * gantsign.minikube
-* weareinteractive.ufw
 
 Example Playbook
 ----------------
