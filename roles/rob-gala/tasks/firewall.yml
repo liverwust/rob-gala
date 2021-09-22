@@ -1,10 +1,97 @@
 ---
 
-- name: Install Uncomplicated Firewall (UFW)
-  include_role:
-    name: weareinteractive.ufw
-  vars:
-    ufw_rules:
-      - logging: "full"
-      - rule: allow
-        name: OpenSSH
+- name: Allow incoming SSH
+  ufw:
+    comment: Allow incoming SSH
+    direction: in
+    insert: 0
+    insert_relative_to: first-ipv4
+    proto: tcp
+    rule: allow
+    to_port: 22
+
+- name: Allow outgoing DNS traffic to the gateway
+  ufw:
+    comment: Allow outgoing DNS traffic to the gateway
+    direction: out
+    insert: 0
+    insert_relative_to: first-ipv4
+    proto: any
+    route: no
+    rule: allow
+    to_port: 53
+    to_ip: "{{ ansible_default_ipv4.gateway }}"
+
+- name: Allow outgoing DHCP traffic to the gateway
+  ufw:
+    comment: Allow outgoing DHCP traffic to the gateway
+    direction: out
+    insert: 0
+    insert_relative_to: first-ipv4
+    from_port: 68
+    proto: udp
+    route: no
+    rule: allow
+    to_ip: "{{ ansible_default_ipv4.gateway }}"
+    to_port: 67
+
+- name: Reject incoming, locally-destined LAN traffic
+  ufw:
+    comment: Reject incoming, locally-destined LAN traffic
+    direction: in
+    from_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+    insert: 1
+    insert_relative_to: last-ipv4
+    route: no
+    rule: reject
+
+#- name: Reject incoming, routed LAN traffic (e.g., to the containers)
+#  ufw:
+#    comment: Reject incoming, routed LAN traffic (e.g., to the containers)
+#    direction: in
+#    from_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+#    route: yes
+#    rule: reject
+
+- name: Drop other incoming traffic
+  ufw:
+    default: deny
+    direction: incoming
+
+- name: Drop outgoing, locally-generated LAN traffic
+  ufw:
+    comment: Drop outgoing, locally-generated LAN traffic
+    direction: out
+    insert: 1
+    insert_relative_to: last-ipv4
+    rule: deny
+    to_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+    route: no
+
+#- name: Drop outgoing, routed LAN traffic
+#  ufw:
+#    comment: Drop outgoing, locally-generated LAN traffic
+#    direction: out
+#    to_ip: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+#    route: yes
+#    rule: deny
+
+#- name: Allow other routed traffic
+#  ufw:
+#    default: allow
+#    direction: routed
+
+- name: Allow other outgoing traffic
+  ufw:
+    default: allow
+    direction: outgoing
+
+- name: Drop all IPv6 draffic
+  ufw:
+    default: deny
+    insert: 0
+    insert_relative_to: first-ipv6
+    proto: ipv6
+- name: Enable UFW at boot
+  ufw:
+    state: enabled
