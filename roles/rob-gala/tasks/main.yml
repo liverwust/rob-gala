@@ -2,10 +2,13 @@
 # tasks file for rob-gala
 
 - name: Basic Ubuntu patching
-  include_tasks: ubuntu.yml
+  import_tasks: ubuntu.yml
 
 - name: Configure system firewall (UFW)
-  include_tasks: firewall.yml
+  import_tasks: firewall.yml
+
+- name: Install and configure Docker
+  import_tasks: docker_rootless.yml
 
 - name: Install and configure Minikube
-  include_tasks: minikube.yml
+  import_tasks: minikube.yml

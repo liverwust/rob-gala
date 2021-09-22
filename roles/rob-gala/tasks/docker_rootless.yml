@@ -1,7 +1,7 @@
 ---
 
 - name: Install docker
-  include_role:
+  import_role:
     name: angstwad.docker_ubuntu
   vars:
     # angstwad.docker_ubuntu logic depends on "python3" in the interpreter name
@@ -13,9 +13,25 @@
     # We configure this elsewhere
     ufw_set_forward_policy: false
   
-#
-# https://rootlesscontaine.rs/getting-started/
-#
+- name: Install docker rootless extras
+  apt:
+    name: docker-ce-rootless-extras
+    state: present
 
+# https://rootlesscontaine.rs/getting-started/
 - name: Rootless Containers - Start the systemd user session on boot
   command: loginctl enable-linger "{{ gala_linux_user }}"
+
+- name: Rootless Containers - Install uidmap utilities
+  apt:
+    name: uidmap
+    state: present
+
+- name: (User) Create the systemd user-instance unit
+  command: dockerd-rootless-setuptool.sh install
+  become: false
+
+- name: (User) Set docker context
+  command: docker context use rootless
+  become: false
+
