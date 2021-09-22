@@ -8,4 +8,4 @@
   import_tasks: firewall.yml
 
 - name: Install and configure Docker
-  import_tasks: docker_rootless.yml
+  import_tasks: docker.yml
