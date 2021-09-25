@@ -13,3 +13,11 @@
       - "{{ gala_linux_user }}"
     # We configure this elsewhere
     ufw_set_forward_policy: false
+
+# It is not clear whether this is necessary. I cannot get docker_image_info
+# to retrieve a list of images. At first I thought it was my earlier rootless
+# attempts, but clearing that status didn't help.
+- name: Install docker SDK
+  apt:
+    name: python3-docker
+    state: present
